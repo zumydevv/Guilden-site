@@ -198,7 +198,7 @@
       var scale = mix(1, endScale, zoom) * (1 + mobileBackdrop * .16);
       var x = mix(origin.x, metrics.width / 2, zoom);
       var endY = metrics.mobile
-        ? metrics.lead + metrics.header + 32 + origin.height * endScale / 2 + mobileBackdrop * metrics.viewport * .12
+        ? metrics.lead + origin.height * endScale * (1 + mobileBackdrop * .16) / 2
         : metrics.height - metrics.viewport / 2;
       var y = mix(origin.y, endY, zoom);
       portal.style.opacity = mix(.72, 1, ease(progress / .3)).toFixed(4);
@@ -224,7 +224,7 @@
       };
       journey.style.setProperty('--stage-top', Math.min(0, viewport - height) + 'px');
       journey.style.setProperty('--journey-travel', metrics.travel + 'px');
-      var artworkBottom = metrics.header + 32 + (metrics.width - 32) * 9 / 16;
+      var artworkBottom = (metrics.width - 32) * 9 / 16;
       journey.style.setProperty('--mobile-overlap', Math.max(0, Math.round(viewport - artworkBottom + 12)) + 'px');
       renderJourney();
     }

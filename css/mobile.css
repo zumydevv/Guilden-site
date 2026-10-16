@@ -46,7 +46,7 @@
   .world-intro__principles p { font-size: 16px; }
   .world-portal { border: 1px solid #ffffff30; box-shadow: 0 16px 50px #0004; }
   .world-portal img { object-fit: contain; }
-  .world-portal { border-color: rgb(255 255 255 / calc(.19 * (1 - var(--portal-background,0)))); box-shadow: 0 16px 50px rgb(0 0 0 / calc(.25 * (1 - var(--portal-background,0)))); mask-image: linear-gradient(to bottom, rgb(0 0 0 / calc(1 - var(--portal-background,0))), #000 28%, #000 66%, rgb(0 0 0 / calc(1 - var(--portal-background,0)))); -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / calc(1 - var(--portal-background,0))), #000 28%, #000 66%, rgb(0 0 0 / calc(1 - var(--portal-background,0)))); }
+  .world-portal { border-color: rgb(255 255 255 / calc(.19 * (1 - var(--portal-background,0)))); box-shadow: 0 16px 50px rgb(0 0 0 / calc(.25 * (1 - var(--portal-background,0)))); mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgb(0 0 0 / calc(1 - var(--portal-background,0))) 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgb(0 0 0 / calc(1 - var(--portal-background,0))) 100%); }
   .section { padding-block: 64px; }
   .section-heading { margin-bottom: 28px; gap: 22px; }
   .section-heading h2 { font-size: clamp(33px,9vw,40px); }
