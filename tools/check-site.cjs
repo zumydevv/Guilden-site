@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..');
-for (const file of ['index.html', 'contact.html', '404.html']) {
+for (const file of ['index.html', '404.html']) {
   const html = fs.readFileSync(path.join(root,file),'utf8');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(ids.length,new Set(ids).size,`${file}: duplicate IDs`);
