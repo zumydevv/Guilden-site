@@ -182,9 +182,11 @@
       journey.style.setProperty('--copy-rise', (-exit * 65) + 'px');
       journey.style.setProperty('--wall-opacity', (1 - ease(progress / .55)).toFixed(4));
       journey.style.setProperty('--wall-mask', (1 - ease(progress / .6)).toFixed(4));
-      journey.style.setProperty('--world-shade', (metrics.mobile ? 0 : ease((progress - .38) / .55)).toFixed(4));
+      var mobileBackdrop = metrics.mobile ? ease((offset - metrics.travel * .78) / (metrics.viewport * .65)) : 0;
+      journey.style.setProperty('--portal-background', mobileBackdrop.toFixed(4));
+      journey.style.setProperty('--world-shade', (metrics.mobile ? ease((offset - metrics.travel * .8) / (metrics.viewport * .3)) * .9 : ease((progress - .38) / .55)).toFixed(4));
       var worldEnd = metrics.mobile
-        ? ease((offset - metrics.travel) / (metrics.viewport * .24))
+        ? ease((offset - metrics.travel - metrics.viewport * .15) / (metrics.viewport * .95))
         : ease((offset - metrics.travel - metrics.gamesHeight * .35) / (metrics.gamesHeight * .65));
       journey.style.setProperty('--world-end', worldEnd.toFixed(4));
       heroContent.forEach(function (node) { node.inert = progress > .3; });
@@ -193,10 +195,10 @@
       // a 16:9 thumbnail to the height of a phone (a roughly 4x enlargement).
       var endScale = metrics.mobile ? (metrics.width - 32) / origin.width
         : Math.max(metrics.width / origin.width, metrics.viewport / origin.height) * 1.06;
-      var scale = mix(1, endScale, zoom);
+      var scale = mix(1, endScale, zoom) * (1 + mobileBackdrop * .16);
       var x = mix(origin.x, metrics.width / 2, zoom);
       var endY = metrics.mobile
-        ? metrics.lead + metrics.header + 32 + origin.height * endScale / 2
+        ? metrics.lead + metrics.header + 32 + origin.height * endScale / 2 + mobileBackdrop * metrics.viewport * .12
         : metrics.height - metrics.viewport / 2;
       var y = mix(origin.y, endY, zoom);
       portal.style.opacity = mix(.72, 1, ease(progress / .3)).toFixed(4);

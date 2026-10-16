@@ -5,8 +5,17 @@ window.GUILDEN_CONFIG = {
 
   /* Vignettes décoratives du mur animé. Les images de games sont aussi reprises. */
   heroThumbnails: [
+    'assets/jeux/vignette-01.webp',
+    'assets/jeux/vignette-02.webp',
+    'assets/jeux/vignette-03.webp',
+    'assets/jeux/vignette-04.webp',
+    'assets/jeux/vignette-05.webp',
+    'assets/jeux/vignette-06.webp',
     'assets/jeux/clean-all-the-bugs.png',
-    'assets/jeux/army-merge-evolution.png'
+    'assets/jeux/army-merge-evolution.png',
+    'assets/jeux/vignette-09.webp',
+    'assets/jeux/vignette-10.webp',
+    'assets/jeux/vignette-11.webp'
   ],
 
   /* Liens des vignettes, à renseigner plus tard : 'vignette-01': { title, url }. */
