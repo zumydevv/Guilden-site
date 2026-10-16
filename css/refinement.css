@@ -273,3 +273,5 @@ body { background: radial-gradient(ellipse at 95% 45%,#ffffff04,transparent 35%)
   .upgrade-deal { flex-direction: column; align-items: flex-start; gap: 20px; }
   .upgrade-deal p { font-size: 25px; }
 }
+
+.upgrade-chapter>.service-chapter { padding-bottom: clamp(48px,6vw,80px); }

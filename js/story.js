@@ -101,8 +101,13 @@
     { root: stats, stage: stats.querySelector('.growth-stage'), render: renderStats, length: 1.2 },
     { root: revenue, stage: revenue.querySelector('.revenue-stage'), render: renderRevenue, length: 1.35 }
   ];
-  var sections = Array.from(document.querySelectorAll('main section[id]'));
+
   var navLinks = Array.from(document.querySelectorAll('.site-nav a'));
+  // Only top-level navigation chapters determine the active tab. Analytics
+  // and monetization stay inside Upgrade Your Game throughout their scroll.
+  var sections = navLinks.map(function (link) {
+    return document.getElementById(link.getAttribute('href').slice(1));
+  }).filter(Boolean);
   var positions = [];
   var frame = 0;
   function update() {
@@ -123,7 +128,6 @@
     header.style.setProperty('--reading-progress', max > 0 ? clamp(y / max).toFixed(4) : '0');
     var active = '';
     positions.forEach(function (section) { if (section.top <= y + 180) active = section.id; });
-    if (y + 180 >= revenue.offsetTop && y + 180 < document.getElementById('studio').offsetTop) active = 'growth';
     navLinks.forEach(function (link) {
       if (link.getAttribute('href') === '#' + active) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
