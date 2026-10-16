@@ -141,7 +141,7 @@
       // Native sticky keeps the chapter on screen while scrolling its animation.
       // On very short screens, read the top first, then pin the panel's bottom.
       var stickyTop = Math.min(headerHeight + 8, viewport - stageHeight - 12);
-      var travel = Math.round(viewport * scene.length);
+      var travel = Math.round(viewport * scene.length * (mobile ? .8 : .9));
 
       scene.root.style.setProperty('--scene-top', stickyTop + 'px');
       scene.root.style.setProperty('--scene-travel', (travel + viewport * .15) + 'px');
