@@ -186,7 +186,7 @@
       journey.style.setProperty('--portal-background', mobileBackdrop.toFixed(4));
       journey.style.setProperty('--world-shade', (metrics.mobile ? ease((offset - metrics.travel * .8) / (metrics.viewport * .3)) * .9 : ease((progress - .38) / .55)).toFixed(4));
       var worldEnd = metrics.mobile
-        ? ease((offset - metrics.travel - metrics.viewport * .15) / (metrics.viewport * .95))
+        ? ease((offset - metrics.travel) / (metrics.viewport * .4))
         : ease((offset - metrics.travel - metrics.gamesHeight * .35) / (metrics.gamesHeight * .65));
       journey.style.setProperty('--world-end', worldEnd.toFixed(4));
       heroContent.forEach(function (node) { node.inert = progress > .3; });
