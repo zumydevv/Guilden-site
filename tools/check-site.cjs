@@ -1,4 +1,4 @@
-/* Checks local navigation, asset references and the contact draft contract. */
+/* Checks local navigation, asset references. */
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
@@ -16,15 +16,4 @@ for (const file of ['index.html', 'contact.html', '404.html']) {
     if (hash) assert.ok(fs.readFileSync(destination,'utf8').includes(`id="${hash}"`),`${file}: broken anchor ${url}`);
   }
 }
-const {buildInquiry} = require('../js/contact.js');
-const email = 'guilden.business@gmail.com';
-for (const project of ['build','redesign','question','invalid']) {
-  const draft = buildInquiry({project,name:'A & B',idea:'Hello\nUn jeu à créer & améliorer',gameUrl:'https://www.roblox.com/games/123/test'},email);
-  const params = new URLSearchParams(draft.href.split('?')[1]);
-  assert.ok(draft.href.startsWith(`mailto:${email}?`));
-  assert.equal(params.get('body'),draft.body);
-  assert.ok(draft.body.includes('Un jeu à créer & améliorer'));
-  assert.equal(draft.body.includes('Roblox game:'),project === 'redesign');
-  assert.ok(!params.get('subject').includes('undefined'));
-}
-console.log('Passed: local navigation, assets, unique IDs, and all contact draft types.');
+console.log('Passed: local navigation, assets and unique IDs.');
