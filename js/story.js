@@ -3,22 +3,15 @@
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   var stats = document.querySelector('.growth-section');
-  var revenue = document.querySelector('[data-revenue-scene]');
   var header = document.querySelector('.site-header');
-  if (!stats || !revenue) return;
+  if (!stats) return;
   var cards = Array.from(stats.querySelectorAll('[data-metric]'));
-  var counters = Array.from(stats.querySelectorAll('[data-counter]'));
-  var chapters = Array.from(revenue.querySelectorAll('[data-growth-chapter]'));
-  var line = revenue.querySelector('[data-revenue-line]');
-  var area = revenue.querySelector('[data-revenue-area]');
-  var pointGroup = revenue.querySelector('[data-revenue-points]');
-  var points = [];
-  for (var i = 0; i < 21; i++) {
-    var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('r', '3.5');
-    pointGroup.appendChild(circle);
-    points.push(circle);
-  }
+  var steps = Array.from(stats.querySelectorAll('.simulation-steps li'));
+  var plot = stats.querySelector('.simulation-plot');
+  var line = stats.querySelector('[data-simulation-line]');
+  var area = stats.querySelector('[data-simulation-area]');
+  var dot = stats.querySelector('[data-simulation-dot]');
+  var compact = window.matchMedia('(max-width: 620px)');
   function clamp(n) { return Math.max(0, Math.min(1, n)); }
   function ease(n) { n = clamp(n); return n * n * (3 - 2 * n); }
   function mix(a, b, p) { return a + (b - a) * p; }
@@ -36,55 +29,50 @@
     var value = mix(Number(d.from), Number(d.to), p);
     return value.toLocaleString('en-US', { minimumFractionDigits: Number(d.decimals || 0), maximumFractionDigits: Number(d.decimals || 0) }) + (d.unit || '');
   }
-  function ordinal(n) {
-    var mod = n % 100;
-    return n + (mod >= 11 && mod <= 13 ? 'th' : ({1:'st',2:'nd',3:'rd'}[n % 10] || 'th'));
-  }
-  var baselines = cards.map(function (card) {
-    return Number(card.querySelector('[data-trend]').textContent.replace(/[^\d.]/g, ''));
-  });
-  var lastStats = -1, lastRevenue = -1;
+  var lastStats = -1;
   function renderStats(progress) {
     if (progress === lastStats) return;
     lastStats = progress;
-    signal(stats, progress);
-    stats.style.setProperty('--growth', progress.toFixed(4));
+    // Three equal scroll intervals, each with a short hold on the final value.
+    var active = Math.min(2, Math.floor(progress * 3));
+    var local = ease(clamp((progress * 3 - active) / .82));
+    var sequential = compact.matches && !reduced.matches;
+    stats.classList.toggle('simulation-sequential', sequential);
+    signal(stats, local);
     cards.forEach(function (card, i) {
-      var p = ease(clamp(progress * 1.2 - i * .035));
+      var p = ease(clamp((progress * 3 - i) / .82));
       signal(card, p);
       card.querySelector('[data-value]').textContent = format(card, p);
-      var rank = Math.round(mix(Number(card.dataset.rankFrom), Number(card.dataset.rankTo), p));
-      card.style.setProperty('--rank', rank + '%');
-      card.querySelector('[data-rank]').textContent = ordinal(rank);
-      var change = mix(-baselines[i], (Number(card.dataset.to) / Number(card.dataset.from) - 1) * 100, p);
-      card.querySelector('[data-trend]').textContent = (change < 0 ? '↓ ' : '↑ ') + Math.abs(change).toFixed(1) + '%';
+      card.classList.toggle('is-active', i === active);
+      if (sequential && i !== active) card.setAttribute('aria-hidden', 'true');
+      else card.removeAttribute('aria-hidden');
+      steps[i].classList.toggle('is-active', i === active);
+      steps[i].classList.toggle('is-complete', p === 1);
+      steps[i].style.setProperty('--step-progress', p.toFixed(4));
     });
-    counters.forEach(function (node) { node.textContent = format(node, ease(progress)); });
-    stats.querySelector('[data-growth-phase]').textContent = progress < .3 ? 'Needs attention' : progress < .8 ? 'Building momentum' : 'Healthy growth';
-    stats.querySelector('[data-growth-report]').textContent = progress < .3 ? 'Every great experience has room to grow.' : progress < .8 ? 'With Guilden, every insight becomes an iteration.' : 'More engaged players. A stronger experience.';
-    stats.querySelector('[data-growth-status]').textContent = progress < .9 ? 'Observe → Understand → Improve' : 'The next level starts with the players.';
-  }
-  var base = [31,30,20,14,11,12,12,11,13,12,15,13,14,16,12,10,11,12,15,21,28];
-  var target = [31,34,36,39,45,51,57,65,69,78,86,96,104,116,121,135,142,154,161,178,186.4];
-  function renderRevenue(progress) {
-    if (progress === lastRevenue) return;
-    lastRevenue = progress;
-    signal(revenue, ease(progress));
-    revenue.querySelector('[data-revenue-value]').textContent = mix(17.36, 186.4, ease(progress)).toFixed(2);
+    var card = cards[active];
+    var from = Number(card.dataset.from), to = Number(card.dataset.to), max = Number(card.dataset.max);
+    var beforeY = 200 - from / max * 200;
     var path = '';
-    points.forEach(function (point, i) {
-      // Later points lift slightly later, so the curve grows towards the right.
-      var local = ease(clamp(progress * 1.16 - i / 20 * .16));
-      var x = i * 50;
-      var y = 300 - mix(base[i], target[i], local) * 1.5;
-      point.setAttribute('cx', x);
-      point.setAttribute('cy', y.toFixed(2));
-      path += (i === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(2);
-    });
+    // Keep the same axis within each metric and retain the starting baseline.
+    for (var i = 0; i <= 40; i++) {
+      var x = i / 40;
+      var trajectory = Math.pow(x, 1.35) + Math.sin(x * Math.PI * 8) * .018 * Math.sin(x * Math.PI);
+      var value = from + (to - from) * trajectory * local;
+      var y = 200 - value / max * 200;
+      path += (i ? 'L' : 'M') + (x * 1000).toFixed(1) + ' ' + y.toFixed(2);
+    }
     line.setAttribute('d', path);
-    area.setAttribute('d', path + 'V300H0Z');
-    revenue.querySelector('[data-revenue-status]').textContent = progress < .28 ? 'Room to grow' : progress < .8 ? 'Building with Guilden' : 'A new level of possibility';
-    chapters.forEach(function (node, i) { node.classList.toggle('is-active', progress >= i / 3); });
+    area.setAttribute('d', path + 'V200H0Z');
+    dot.setAttribute('cy', (200 - mix(from, to, local) / max * 200).toFixed(2));
+    stats.querySelector('[data-simulation-before]').setAttribute('d', 'M0 ' + beforeY + 'H1000');
+    stats.querySelector('[data-axis-max]').textContent = max + card.dataset.unit;
+    stats.querySelector('[data-axis-mid]').textContent = max / 2 + card.dataset.unit;
+    stats.querySelector('[data-simulation-note]').textContent = card.dataset.note;
+    stats.querySelector('[data-simulation-phase]').textContent = local === 1 ? 'After Guilden' : local > 0 ? 'Improving with Guilden' : 'Before Guilden';
+    stats.querySelector('[data-simulation-count]').textContent = '0' + (active + 1) + ' / 03';
+    stats.querySelector('[data-simulation-scroll]').textContent = progress >= .94 ? 'Your next step starts below.' : 'Keep scrolling to improve the next metric.';
+    plot.setAttribute('aria-label', 'Illustrative ' + card.querySelector('h4').textContent + ': ' + format(card, 0) + ' before, ' + format(card, local) + ' in this scenario. Not actual results.');
   }
   var galleryRoot = document.querySelector('.gallery-section');
   var gallery = galleryRoot.querySelector('.game-gallery');
@@ -98,8 +86,7 @@
     });
   }
   var scenes = [
-    { root: stats, stage: stats.querySelector('.growth-stage'), render: renderStats, length: 1.2 },
-    { root: revenue, stage: revenue.querySelector('.revenue-stage'), render: renderRevenue, length: 1.35 }
+    { root: stats, stage: stats.querySelector('.growth-stage'), render: renderStats, length: 2.7 }
   ];
 
   var navLinks = Array.from(document.querySelectorAll('.site-nav a'));
@@ -137,7 +124,9 @@
     var viewport = document.documentElement.clientHeight;
     var headerHeight = header.offsetHeight;
     var mobile = window.matchMedia('(max-width: 620px)').matches;
-    lastStats = -1; lastRevenue = -1;
+    lastStats = -1;
+    // Apply mobile layout before measuring the sticky panel height.
+    stats.classList.toggle('simulation-sequential', mobile && !reduced.matches);
     scenes.forEach(function (scene) {
       var animated = !reduced.matches;
       scene.root.classList.toggle('scroll-scene', animated);
