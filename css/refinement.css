@@ -200,3 +200,29 @@ body { background: radial-gradient(ellipse at 95% 45%,#ffffff04,transparent 35%)
 .offer-terms>span:nth-child(2) { font-weight: 400; font-size: 13px; }
 .offers .offer--growth .offer-model { font-size: 14px; line-height: 1.6; padding-top: 18px; }
 @media(max-width:760px) { .offers { grid-template-columns: 1fr; } }
+
+/* Distinct scroll chapters for creating and upgrading a game. */
+.service-chapter { position: relative; }
+.legacy-anchor { position: absolute; top: 0; }
+.section-heading>.service-intro { max-width: 390px; font-size: 18px; line-height: 1.7; }
+.service-next-step { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-block: 12px; }
+.service-next-step>p { color: #b9b9c1; font-size: 16px; line-height: 1.75; }
+.service-contact-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 32px; padding-block: 16px; min-height: 48px; color: var(--brand); border-bottom: 1px solid #66ff0066; font-size: 17px; font-weight: 500; }
+.upgrade-partnership { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 44px; padding: 40px 0; position: relative; }
+.upgrade-partnership::before { content: ''; position: absolute; inset: 0 0 auto; height: 1px; background: linear-gradient(90deg,transparent,#66ff0044 15%,#66ff0044 85%,transparent); }
+.upgrade-partnership h3 { margin-top: 18px; font-size: clamp(30px,3vw,42px); line-height: 1.15; letter-spacing: -.04em; }
+.upgrade-partnership>div>p:not(.eyebrow) { font-size: 18px; line-height: 1.75; color: #b9b9c1; }
+.upgrade-partnership .service-contact-link { margin-top: 18px; }
+@media(min-width:901px) and (max-width:1200px) {
+  .site-nav { gap: 12px; font-size: 12px; }
+  .site-header__inner { gap: 18px; }
+  .site-header .brand { font-size: 28px; gap: 7px; }
+  .site-header .brand img { width: 34px; height: 34px; }
+}
+@media(max-width:760px) {
+  .service-next-step { align-items: flex-start; flex-direction: column; gap: 18px; }
+  .section-heading>.service-intro { font-size: 17px; }
+  .upgrade-partnership { grid-template-columns: 1fr; gap: 24px; padding-block: 30px; margin-top: 32px; }
+  .upgrade-partnership>div>p:not(.eyebrow) { font-size: 16px; }
+  .service-contact-link { font-size: 16px; }
+}
