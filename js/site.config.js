@@ -1,21 +1,12 @@
 /* Guilden — configuration des jeux et des contacts. Les valeurs nulles sont masquées. */
 window.GUILDEN_CONFIG = {
   name: "Guilden",
-  siteUrl: null,
+  siteUrl: 'https://www.guilden.app/',
 
   /* Vignettes décoratives du mur animé. Les images de games sont aussi reprises. */
   heroThumbnails: [
-    'assets/jeux/vignette-01.webp',
-    'assets/jeux/vignette-02.webp',
-    'assets/jeux/vignette-03.webp',
-    'assets/jeux/vignette-04.webp',
-    'assets/jeux/vignette-05.webp',
-    'assets/jeux/vignette-06.webp',
-    'assets/jeux/vignette-07.webp',
-    'assets/jeux/vignette-08.webp',
-    'assets/jeux/vignette-09.webp',
-    'assets/jeux/vignette-10.webp',
-    'assets/jeux/vignette-11.webp'
+    'assets/jeux/clean-all-the-bugs.png',
+    'assets/jeux/army-merge-evolution.png'
   ],
 
   /* Liens des vignettes, à renseigner plus tard : 'vignette-01': { title, url }. */

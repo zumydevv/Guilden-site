@@ -308,3 +308,18 @@ body { background: radial-gradient(ellipse at 100% 65%,#ffffff03,transparent 35%
 .site-header,.site-header.is-scrolled { position: fixed; inset: 0 0 auto; margin: 0; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
 .site-header::after { display: none; }
 .site-header .brand,.site-header .site-nav>a { text-shadow: 0 1px 5px #000c,0 2px 12px #0008; }
+
+/* Named releases retain the vertical, scroll-revealed gallery. */
+.game-gallery .game-caption { align-items: center; gap: 24px; letter-spacing: 0; padding-top: 22px; }
+.game-caption__index { color: #a0a0a8; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.game-caption h3 { margin-top: 8px; font-size: clamp(24px,2.6vw,34px); color: var(--text); }
+.game-caption__status { display: inline-flex; align-items: center; gap: 9px; color: #c8c8cf; font-size: 14px; white-space: nowrap; }
+.game-caption__status i { width: 7px; height: 7px; border: 1px solid var(--brand); border-radius: 50%; }
+.game-caption__status--play { color: var(--brand); }
+.game-gallery figure>a:hover h3 { color: var(--brand); }
+.game-gallery figure>a:focus-visible { outline-offset: 8px; }
+@media(max-width:620px) {
+  .game-gallery .game-caption { flex-direction: column; align-items: flex-start; gap: 14px; padding-top: 16px; }
+  .game-caption h3 { font-size: 25px; margin-top: 6px; }
+  .game-caption__status { font-size: 13px; }
+}

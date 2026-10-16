@@ -138,16 +138,15 @@
       var animated = !reduced.matches;
       scene.root.classList.toggle('scroll-scene', animated);
       var stageHeight = scene.stage.offsetHeight;
-      // Never pin a panel taller than the phone's available reading area.
-      var pinned = animated && (!mobile || stageHeight <= viewport - headerHeight - 16);
-      scene.root.classList.toggle('scroll-scene', pinned);
-      var stickyTop = Math.min(headerHeight, viewport - stageHeight);
-      var travel = Math.round(mobile ? (pinned ? viewport * .65 : Math.max(200, stageHeight - viewport * .35)) : viewport * scene.length);
+      // Native sticky keeps the chapter on screen while scrolling its animation.
+      // On very short screens, read the top first, then pin the panel's bottom.
+      var stickyTop = Math.min(headerHeight + 8, viewport - stageHeight - 12);
+      var travel = Math.round(viewport * scene.length);
 
       scene.root.style.setProperty('--scene-top', stickyTop + 'px');
-      scene.root.style.setProperty('--scene-travel', travel + 'px');
+      scene.root.style.setProperty('--scene-travel', (travel + viewport * .15) + 'px');
       var top = scene.root.getBoundingClientRect().top + window.scrollY;
-      scene.metrics = { start: mobile && !pinned ? top - headerHeight : top - stickyTop, travel: travel, top: top, bottom: top + scene.root.offsetHeight, viewport: viewport, mobile: mobile };
+      scene.metrics = { start: top - stickyTop, travel: travel, top: top, bottom: top + scene.root.offsetHeight, viewport: viewport, mobile: mobile };
     });
     positions = sections.map(function (section) { return { id: section.id, top: section.getBoundingClientRect().top + window.scrollY }; });
     update();
