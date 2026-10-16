@@ -182,15 +182,25 @@
       journey.style.setProperty('--copy-rise', (-exit * 65) + 'px');
       journey.style.setProperty('--wall-opacity', (1 - ease(progress / .55)).toFixed(4));
       journey.style.setProperty('--wall-mask', (1 - ease(progress / .6)).toFixed(4));
-      journey.style.setProperty('--world-shade', ease((progress - .38) / .55).toFixed(4));
-      journey.style.setProperty('--world-end', ease((offset - metrics.travel - metrics.gamesHeight * .35) / (metrics.gamesHeight * .65)).toFixed(4));
+      journey.style.setProperty('--world-shade', (metrics.mobile ? 0 : ease((progress - .38) / .55)).toFixed(4));
+      var worldEnd = metrics.mobile
+        ? ease((offset - metrics.travel) / (metrics.viewport * .24))
+        : ease((offset - metrics.travel - metrics.gamesHeight * .35) / (metrics.gamesHeight * .65));
+      journey.style.setProperty('--world-end', worldEnd.toFixed(4));
       heroContent.forEach(function (node) { node.inert = progress > .3; });
       if (!origin) return;
-      var scale = mix(1, Math.max(metrics.width / origin.width, metrics.viewport / origin.height) * 1.06, zoom);
+      // Portrait screens retain the complete landscape artwork instead of cropping
+      // a 16:9 thumbnail to the height of a phone (a roughly 4x enlargement).
+      var endScale = metrics.mobile ? (metrics.width - 32) / origin.width
+        : Math.max(metrics.width / origin.width, metrics.viewport / origin.height) * 1.06;
+      var scale = mix(1, endScale, zoom);
       var x = mix(origin.x, metrics.width / 2, zoom);
-      var y = mix(origin.y, metrics.height - metrics.viewport / 2, zoom);
+      var endY = metrics.mobile
+        ? metrics.lead + metrics.header + 32 + origin.height * endScale / 2
+        : metrics.height - metrics.viewport / 2;
+      var y = mix(origin.y, endY, zoom);
       portal.style.opacity = mix(.72, 1, ease(progress / .3)).toFixed(4);
-      portal.style.borderRadius = mix(14, 0, zoom) + 'px';
+      portal.style.borderRadius = mix(14, metrics.mobile ? 18 / endScale : 0, zoom) + 'px';
       portal.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%) rotate(' + mix(-12, 0, zoom) + 'deg) scale(' + scale + ')';
     }
 
@@ -201,15 +211,19 @@
       if (reduced.matches) return;
       var viewport = document.documentElement.clientHeight;
       var height = hero.offsetHeight;
+      var mobile = window.matchMedia('(max-width: 620px)').matches;
       metrics = {
         viewport: viewport, height: height, width: hero.clientWidth,
+        mobile: mobile, header: header ? header.offsetHeight : 72,
         lead: Math.max(0, height - viewport),
         top: journey.getBoundingClientRect().top + window.scrollY,
-        travel: Math.round(viewport * 1.15),
+        travel: Math.round(viewport * (mobile ? .58 : 1.15)),
         gamesHeight: document.getElementById('vision').offsetHeight
       };
       journey.style.setProperty('--stage-top', Math.min(0, viewport - height) + 'px');
       journey.style.setProperty('--journey-travel', metrics.travel + 'px');
+      var artworkBottom = metrics.header + 32 + (metrics.width - 32) * 9 / 16;
+      journey.style.setProperty('--mobile-overlap', Math.max(0, Math.round(viewport - artworkBottom + 12)) + 'px');
       renderJourney();
     }
     function scheduleJourney() {

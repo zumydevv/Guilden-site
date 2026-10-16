@@ -49,6 +49,9 @@
     if (!toggle || !menu) return;
 
     var mobileQuery = window.matchMedia('(max-width: 900px)');
+    var scrim = el('div', { class: 'menu-scrim', 'aria-hidden': 'true' });
+    document.body.appendChild(scrim);
+    var pageContent = [document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean);
 
     function isOpen() {
       return toggle.getAttribute('aria-expanded') === 'true';
@@ -57,6 +60,9 @@
     function setOpen(open) {
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       menu.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('menu-open', open);
+      menu.inert = mobileQuery.matches && !open;
+      pageContent.forEach(function (node) { node.inert = open; });
       if (label) label.textContent = open ? 'Close' : 'Menu';
     }
 
@@ -76,6 +82,15 @@
         setOpen(false);
         toggle.focus();
       }
+      if (event.key === 'Tab' && isOpen()) {
+        var links = menu.querySelectorAll('a');
+        var last = links[links.length - 1];
+        if (event.shiftKey && document.activeElement === toggle) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); toggle.focus();
+        }
+      }
     });
 
     /* Clic en dehors du header : fermeture. */
@@ -87,13 +102,14 @@
 
     /* Retour sur grand écran : on nettoie l'état ouvert. */
     function onViewportChange(mq) {
-      if (!mq.matches) setOpen(false);
+      setOpen(false);
     }
     if (typeof mobileQuery.addEventListener === 'function') {
       mobileQuery.addEventListener('change', onViewportChange);
     } else if (typeof mobileQuery.addListener === 'function') {
       mobileQuery.addListener(onViewportChange);
     }
+    setOpen(false);
   })();
 
   /* ---------- Liens de la galerie, lorsqu'ils sont fournis ---------- */

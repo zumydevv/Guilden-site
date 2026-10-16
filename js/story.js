@@ -115,7 +115,7 @@
       scene.root.style.setProperty('--chapter-progress', p.toFixed(4));
       var entry = ease((scene.metrics.viewport - (scene.metrics.top - y)) / (scene.metrics.viewport * .55));
       var exit = ease((scene.metrics.bottom - y) / (scene.metrics.viewport * .45));
-      scene.root.style.setProperty('--scene-opacity', reduced.matches ? '1' : Math.min(entry, exit).toFixed(4));
+      scene.root.style.setProperty('--scene-opacity', reduced.matches || scene.metrics.mobile ? '1' : Math.min(entry, exit).toFixed(4));
       // Quantization avoids needless text and SVG writes below a visible change.
       scene.render(Math.round(p * 1000) / 1000);
     });
@@ -132,18 +132,22 @@
   function measure() {
     var viewport = document.documentElement.clientHeight;
     var headerHeight = header.offsetHeight;
+    var mobile = window.matchMedia('(max-width: 620px)').matches;
     lastStats = -1; lastRevenue = -1;
     scenes.forEach(function (scene) {
       var animated = !reduced.matches;
       scene.root.classList.toggle('scroll-scene', animated);
       var stageHeight = scene.stage.offsetHeight;
+      // Never pin a panel taller than the phone's available reading area.
+      var pinned = animated && (!mobile || stageHeight <= viewport - headerHeight - 16);
+      scene.root.classList.toggle('scroll-scene', pinned);
       var stickyTop = Math.min(headerHeight, viewport - stageHeight);
-      var travel = Math.round(viewport * scene.length);
+      var travel = Math.round(mobile ? (pinned ? viewport * .65 : Math.max(200, stageHeight - viewport * .35)) : viewport * scene.length);
 
       scene.root.style.setProperty('--scene-top', stickyTop + 'px');
       scene.root.style.setProperty('--scene-travel', travel + 'px');
       var top = scene.root.getBoundingClientRect().top + window.scrollY;
-      scene.metrics = { start: top - stickyTop, travel: travel, top: top, bottom: top + scene.root.offsetHeight, viewport: viewport };
+      scene.metrics = { start: mobile && !pinned ? top - headerHeight : top - stickyTop, travel: travel, top: top, bottom: top + scene.root.offsetHeight, viewport: viewport, mobile: mobile };
     });
     positions = sections.map(function (section) { return { id: section.id, top: section.getBoundingClientRect().top + window.scrollY }; });
     update();
