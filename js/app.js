@@ -7,7 +7,7 @@
   'use strict';
 
   var config = window.GUILDEN_CONFIG || {};
-  var BRAND_MARK = 'assets/guilden-controller-mark.png';
+  var BRAND_MARK = 'assets/guilden-mark-small.png';
 
   /* ---------- Utilitaires ---------- */
   function el(tag, attrs, children) {
@@ -227,7 +227,7 @@
       links.push(
         el('li', null, [
           el('a', {
-            class: 'text-link',
+            class: def.key === 'email' ? 'text-link contact-email' : 'text-link',
             href: href,
             target: external ? '_blank' : null,
             rel: external ? 'noopener noreferrer' : null,

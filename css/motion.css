@@ -34,7 +34,7 @@ body {
   content: ''; position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(90deg, #101010ed 0%, #101010b8 38%, #10101030 100%), linear-gradient(0deg, #101010 0%, #101010d9 7%, #10101040 36%, #10101026 70%, #101010de 100%);
 }
-.thumbnail-wall__fallback { position: absolute; inset: 0; background: url('../assets/jeux/clean-all-the-bugs.png') center / cover; opacity: .45; }
+.thumbnail-wall__fallback { position: absolute; inset: 0; background: url('../assets/jeux/clean-all-the-bugs.webp') center / cover; opacity: .45; }
 .thumbnail-wall.is-ready .thumbnail-wall__fallback { display: none; }
 .thumbnail-wall__canvas { position: absolute; left: -400px; right: -400px; top: 50%; transform: translate3d(var(--wall-x, 0px), calc(-50% + var(--wall-y, 0px)), 0) rotate(-12deg); transition: transform .8s cubic-bezier(.2,.8,.2,1); opacity: .72; }
 .thumbnail-row { margin-bottom: 18px; }

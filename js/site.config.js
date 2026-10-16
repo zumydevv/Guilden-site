@@ -11,8 +11,8 @@ window.GUILDEN_CONFIG = {
     'assets/jeux/vignette-04.webp',
     'assets/jeux/vignette-05.webp',
     'assets/jeux/vignette-06.webp',
-    'assets/jeux/clean-all-the-bugs.png',
-    'assets/jeux/army-merge-evolution.png',
+    'assets/jeux/clean-all-the-bugs.webp',
+    'assets/jeux/army-merge-evolution-small.webp',
     'assets/jeux/vignette-09.webp',
     'assets/jeux/vignette-10.webp',
     'assets/jeux/vignette-11.webp'
