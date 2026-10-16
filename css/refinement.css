@@ -161,7 +161,7 @@ body { background: radial-gradient(ellipse at 95% 45%,#ffffff04,transparent 35%)
 @media (prefers-reduced-motion:reduce) { .scroll-cue__line::after { animation: none; } .game-gallery .game-art img { transition: none; } }
 
 /* Prominent development turnaround, shared across desktop and mobile. */
-.build-speed { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; padding: 44px 48px; margin-bottom: 28px; border-block: 1px solid #66ff0038; background: linear-gradient(110deg,#66ff000b,transparent 72%); }
+.build-speed { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; padding: 44px 48px; margin-bottom: 28px; position: relative; border-block: 1px solid transparent; background: linear-gradient(90deg,transparent,#66ff000b 18%,#66ff0007 65%,transparent); }
 .build-speed__copy h3 { margin-top: 18px; font-size: clamp(30px,3.3vw,46px); line-height: 1.12; letter-spacing: -.045em; }
 .build-speed__copy>p:last-child { margin-top: 18px; font-size: 17px; color: #bdbdc5; line-height: 1.6; }
 .build-speed__time { display: flex; flex-direction: column; align-items: flex-start; }
@@ -176,3 +176,7 @@ body { background: radial-gradient(ellipse at 95% 45%,#ffffff04,transparent 35%)
   .build-speed__time strong { font-size: clamp(76px,23vw,116px); gap: 14px; }
   .build-speed__time strong span { font-size: 30px; }
 }
+
+.build-speed::before, .build-speed::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; pointer-events: none; background: linear-gradient(90deg,transparent,#66ff0038 18%,#66ff0038 82%,transparent); }
+.build-speed::before { top: -1px; }
+.build-speed::after { bottom: -1px; }
