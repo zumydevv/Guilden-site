@@ -192,3 +192,11 @@ body { background: radial-gradient(ellipse at 95% 45%,#ffffff04,transparent 35%)
   .hero-proof dd { font-size: 12px; line-height: 1.55; margin-top: 8px; }
   .hero--immersive { padding-bottom: 48px; }
 }
+
+/* Keep all four services readable, with explicit growth partnership terms. */
+.offers { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.offer-terms { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 24px; font-size: 15px; font-weight: 600; }
+.offer-terms>span:not(:nth-child(2)) { padding: 8px 12px; border: 1px solid #18330745; border-radius: 8px; background: #ffffff30; }
+.offer-terms>span:nth-child(2) { font-weight: 400; font-size: 13px; }
+.offers .offer--growth .offer-model { font-size: 14px; line-height: 1.6; padding-top: 18px; }
+@media(max-width:760px) { .offers { grid-template-columns: 1fr; } }
