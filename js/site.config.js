@@ -39,7 +39,7 @@ window.GUILDEN_CONFIG = {
 
   /* Ajouter uniquement des coordonnées réelles. */
   contacts: {
-    email: null,
+    email: "guilden.business@gmail.com",
     discord: null,
     discordUser: "zumyv",
     roblox: null,

@@ -231,7 +231,7 @@
             href: href,
             target: external ? '_blank' : null,
             rel: external ? 'noopener noreferrer' : null,
-            text: def.label
+            text: def.key === 'email' ? value.trim() : def.label
           })
         ])
       );
