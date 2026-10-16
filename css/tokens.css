@@ -1,0 +1,18 @@
+:root {
+  --bg: #101010;
+  --surface: #191919;
+  --text: #f2f3ee;
+  --muted: #c1c1c1;
+  --brand: #66ff00;
+  --brand-solid: #3f9e00;
+  --line: #535353;
+  --stroke: 2px;
+  --title-font: 'Space Grotesk', Arial, sans-serif;
+  --body-font: 'DM Sans', Arial, sans-serif;
+  --container: 1280px;
+  --text-label: .8125rem;
+  --text-small: .9375rem;
+  --text-body: 1.0625rem;
+  --text-lead: 1.25rem;
+  --section-space: clamp(72px, 8vw, 120px);
+}
