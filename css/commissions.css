@@ -9,9 +9,10 @@
 .hero-delivery>strong>span { font-size: .46em; letter-spacing: -.035em; }
 .hero-delivery>p { font-size: 14px; line-height: 1.65; color: #efeff2; padding-left: 24px; border-left: 1px solid #ffffff3b; }
 .hero-delivery>p>span { color: #bcbcc5; }
-.commissions-site .hero-proof { margin-top: 32px; padding-top: 22px; max-width: 720px; }
+.commissions-site .hero-proof { margin-top: 32px; padding-top: 22px; max-width: 900px; grid-template-columns: repeat(4,minmax(0,1fr)); }
 .commissions-site .hero-proof dt { font-size: 40px; }
 .commissions-site .hero-proof dd { font-size: 13px; }
+.commissions-site .hero-proof__revenue dt>span { font-size: .55em; letter-spacing: -.035em; }
 .commissions-site .scroll-cue { margin-top: 30px; }
 .commission-offer { grid-template-columns: 1.2fr 1fr; gap: 64px; }
 .commission-offer .commission-lead { font-size: 20px; color: #d0d0d6; line-height: 1.6; margin-top: 24px; }
@@ -107,7 +108,7 @@
   .hero-delivery { gap: 16px; margin-top: 26px; }
   .hero-delivery>strong { font-size: 44px; }
   .hero-delivery>p { padding-left: 16px; font-size: 12px; }
-  .commissions-site .hero-proof { margin-top: 28px; gap: 12px; }
+  .commissions-site .hero-proof { margin-top: 28px; gap: 22px 18px; grid-template-columns: repeat(2,minmax(0,1fr)); }
   .commissions-site .hero-proof dt { font-size: clamp(26px,7.5vw,36px); }
   .commissions-site .hero-proof dd { font-size: 11px; }
   .commissions-site .scroll-cue { font-size: 12px; margin-top: 26px; }

@@ -1,9 +1,8 @@
-/* Native vertical scrolling: artwork entrances, build steps and navigation. */
+/* Native vertical scrolling: build steps and navigation. */
 (function () {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   var header = document.querySelector('.site-header');
-  var cards = Array.from(document.querySelectorAll('.game-gallery figure'));
   var steps = Array.from(document.querySelectorAll('[data-build-step]'));
   var links = Array.from(document.querySelectorAll('.site-nav a'));
   var sections = links.map(function (link) { return document.querySelector(link.getAttribute('href')); }).filter(Boolean);
@@ -12,10 +11,6 @@
   function update() {
     frame = 0;
     var viewport = document.documentElement.clientHeight;
-    cards.forEach(function (card) {
-      var p = reduced.matches ? 1 : clamp((viewport - card.getBoundingClientRect().top) / (viewport * .65));
-      card.style.setProperty('--card-enter', (p * p * (3 - 2 * p)).toFixed(4));
-    });
     steps.forEach(function (step) {
       step.classList.toggle('is-current', reduced.matches || step.getBoundingClientRect().top < viewport * .68);
     });
