@@ -28,13 +28,14 @@ window.GUILDEN_CONFIG = {
   quote: {
     subject: "Custom Roblox project — Guilden",
     body: [
-      "Company:",
+      "Name / studio (optional):",
       "Idea:",
-      "Goals:",
+      "Main features:",
+      "References:",
       "Estimated budget (optional):",
       "Desired timeline (optional):"
     ].join("\n"),
-    hint: "Please include your company, your idea and your goals. A budget range and a desired timeline are optional but helpful."
+    hint: "Send your idea, main features and references. Include a budget or deadline if you have one."
   },
 
   /* Ajouter uniquement des coordonnées réelles. */
