@@ -14,13 +14,13 @@ const fs = require('node:fs');
       page.on('pageerror', error => errors.push(error.message));
       await page.goto('http://localhost:4173/', {waitUntil:'networkidle'});
       await page.evaluate(() => document.fonts.ready);
-      assert.equal(await page.locator('main > section').count(),4, 'All main chapters retain their document hierarchy');
-      assert.equal(await page.locator('.genre-item').count(),6);
+      assert.equal(await page.locator('main > section').count(),3, 'All main chapters retain their document hierarchy');
+      assert.equal(await page.locator('.genre-item').count(),0);
       assert.equal(await page.locator('.game-gallery figure').count(),0);
       assert.equal(await page.locator('.simulation-panel, .analytics').count(),0);
       assert.equal(await page.locator('form').count(),0);
       assert.ok((await page.locator('.contact-email').getAttribute('href')).startsWith('mailto:guilden.business@gmail.com?'));
-      for (const id of ['top','vision','game-types','process','questions','contact']) {
+      for (const id of ['top','vision','process','questions','contact']) {
         await page.locator('#'+id).scrollIntoViewIfNeeded();
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), `No overflow: ${width}px / ${id}`);
       }
@@ -29,7 +29,7 @@ const fs = require('node:fs');
       if(width<=900) {
         await page.getByRole('button',{name:'Menu',exact:true}).click();
         assert.equal(await page.locator('main').evaluate(el=>el.inert),true);
-        await page.getByRole('navigation').getByRole('link',{name:'Game types',exact:true}).click();
+        await page.getByRole('navigation').getByRole('link',{name:'How it works',exact:true}).click();
         assert.equal(await page.locator('[data-menu-toggle]').getAttribute('aria-expanded'),'false');
         assert.equal(await page.locator('main').evaluate(el=>el.inert),false);
         await page.getByRole('button',{name:'Menu',exact:true}).click();
@@ -50,7 +50,7 @@ const fs = require('node:fs');
     const errors=[];
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://localhost:4173/',{waitUntil:'networkidle'});
-    for(const id of ['vision','game-types','process','contact','top']) {
+    for(const id of ['vision','process','contact','top']) {
       await page.locator('#'+id).scrollIntoViewIfNeeded();
       await page.waitForTimeout(300);
     }
